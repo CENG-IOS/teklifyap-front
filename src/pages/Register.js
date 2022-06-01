@@ -9,7 +9,6 @@ import ToolTip from "../components/Inputs/ToolTip";
 import Modal from 'react-bootstrap/Modal';
 import BaseURL from '../api/BaseURL'
 import FakeLoader from "../components/FakeLoader";
-import CommonMaterials from "../components/CommonMaterials";
 
 const Register = (props) => {
     const [name, setName] = useState("");
@@ -43,6 +42,8 @@ const Register = (props) => {
     };
     /*****************************************************************************/
 
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
     const RegisterHandler = (event) => {
         setWarning([]);
         event.preventDefault();
@@ -58,11 +59,10 @@ const Register = (props) => {
         let reg = /^\d+$/.test(password);
 
         const values = {
-            user_name: name,
-            user_surname: surname,
-            user_email: email,
-            user_password: password,
-            user_creation_date: today,
+            name: name,
+            surname: surname,
+            mail: email,
+            password: password
         };
 
         if (password != passwordAgain) {
@@ -88,7 +88,7 @@ const Register = (props) => {
         if (warning.length < 1)
             setWarningPop(true)
 
-        fetch(BaseURL + "api/user/add", {
+        fetch(BaseURL + "auth", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -96,45 +96,27 @@ const Register = (props) => {
             body: JSON.stringify(values),
         })
             .then((response) => response.json())
-            .then((data) => {
-                if (!data.success) {
-                    setWarning((oldArray) => [
-                        ...oldArray,
-                        data.message,
-                    ]);
+            .then(async (data) => {
+                console.log(data);
+                if (data.status === "200 OK") {
+                    setWarningPop(true);
+
+                    await delay(5000);
+                    
+                    history.push("/login");
+                } else if (data.status === 500) {
+                    if (data.message === "existingUser") {
+                        setWarning((oldArray) => [
+                            ...oldArray,
+                            "Bu mail adresi zaten kayıtlı."
+                        ]);
+                    } else {
+                        setWarning((oldArray) => [
+                            ...oldArray,
+                            "Bir hata oluştu."
+                        ]);
+                    }
                     setWarningPop(false)
-                } else {
-
-                    let materials = new Array();
-                    CommonMaterials.map((item) => {
-                        materials.push({
-                            ...item,
-                            user: {
-                                user_id: data.data
-                            }
-                        })
-                    })
-
-                    fetch(BaseURL + "api/material/adds", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(materials)
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if (data.success) {
-                                history.push("/Login")
-                            }
-                            else {
-                                setWarning((oldArray) => [
-                                    ...oldArray,
-                                    "Beklenmedik bir hata meydana geldi.",
-                                ]);
-                                setWarningPop(false)
-                            }
-                        });
                 }
             });
     };
@@ -219,7 +201,7 @@ const Register = (props) => {
                                         </div>
 
                                         {warning.map((index) => (
-                                            <div className="col-11 user-select-none">
+                                            <div className="col-11 user-select-none mt-3">
                                                 <div className="d-flex align-self-start">
                                                     <img className="warning-img d-inline" src={warnIng} />
                                                     <div className="ms-1 warning-text">{index}</div>
@@ -227,7 +209,7 @@ const Register = (props) => {
                                             </div>
                                         ))}
 
-                                        <div className="d-flex justify-content-center mt-4 mb-2">
+                                        <div className="d-flex justify-content-center mt-3 mb-2">
                                             <Buttons
                                                 title="Kayıt Ol"
                                                 disabled={

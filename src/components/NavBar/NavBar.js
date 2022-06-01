@@ -5,8 +5,6 @@ import { LandingPLogin } from "../Buttons/LandingPLogin";
 import { LandingPOffer } from "../Buttons/LandingPOffer";
 import { useSelector, useDispatch } from "react-redux";
 import { AuthActions } from "../../store/slices/Auth";
-import menu from "../../images/sandwichMenu/sandwich.svg";
-import menuCROSS from "../../images/sandwichMenu/sandwichCross.svg";
 import { NavbarAnimation } from "../Animations/NavbarAnimation";
 import loginSYMBOL from "../../images/LOGsymbol.svg";
 import RegisterSYMBOL from "../../images/REGsymbol.svg";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import background from "../images/bg.jpg";
 import Buttons from "../components/Buttons/Buttons";
 import Input from "../components/Inputs/Input";
@@ -7,7 +7,6 @@ import UseHttp from "../api/useHttp";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthActions } from "../store/slices/Auth";
 import warnIng from "../images/warning.svg";
-import ToolTip from "../components/Inputs/ToolTip";
 import Modal from 'react-bootstrap/Modal'
 import BaseURL from '../api/BaseURL'
 import FakeLoader from "../components/FakeLoader";
@@ -35,14 +34,16 @@ const Login = () => {
     const loginHandler = (e) => {
         e.preventDefault();
 
-        setWarning(true)
+        // setWarning(true)
+
 
         const values = {
-            user_email: email,
-            user_password: password,
+            mail: email,
+            password: password,
+            rememberMe: true
         };
 
-        fetch(BaseURL + "api/user/getByEmailAndPassword", {
+        fetch(BaseURL + "auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -51,19 +52,22 @@ const Login = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                setInfo(data)
-                if (!data.success)
-                    setWarning(false)
+                // console.log(data);
+
+                if (data.status === "200") {
+
+                    dispatch(AuthActions.login(data));
+                    // history.push("/");
+                } else if (data.status === "401 Unauthorized") {
+                    setWarning(true);
+                } else if (data.status === "500") {
+                    if (data.error === "BadCredentials") {
+                        setWarning(true);
+                    }
+                }
+
             });
     };
-    useEffect(() => {
-        if (info != null) {
-            if (info != null && info.success == true) {
-                dispatch(AuthActions.login(info.data));
-                history.push("/");
-            }
-        }
-    }, [info]);
 
     return (
         <React.Fragment>
@@ -82,7 +86,7 @@ const Login = () => {
                                         : "d-flex justify-content-center flex-column align-items-center round round-dark-theme"
                                 }
                             >
-                                <div className="mb-3 mt-5">
+                                {/* <div className="mb-3 mt-5">
                                     <div className="hover-me">
                                         <Buttons title="Facebook İle Giriş Yap" disabled={true} />
                                     </div>
@@ -103,12 +107,15 @@ const Login = () => {
                                     }
                                 >
                                     veya
-                                </div>
+                                </div> */}
 
                                 <form
                                     onSubmit={loginHandler}
-                                    className="d-flex flex-column align-items-center"
+                                    className="d-flex flex-column align-items-center mt-4"
                                 >
+
+                                    <h3 className="text-center">Giriş Yap</h3>
+
                                     <div className="mt-3">
                                         <Input
                                             title="Email"
@@ -180,14 +187,15 @@ const Login = () => {
                                             : "text-center mt-3 or-text or-text-dark-theme user-select-none account-none-text"
                                     }
                                 >
-                                    Hesabın Yoksa
+                                    Hesabın yoksa
+                                    <span> </span>
+                                    <Link
+                                        className="register-account-link user-select-none mt-2"
+                                        to="./Register"
+                                    >kayıt ol
+                                    </Link>.
                                 </div>
-                                <Link
-                                    className="register-account-link user-select-none mt-2 pb-4"
-                                    to="./Register"
-                                >
-                                    Kayıt Ol
-                                </Link>
+                                <br />
                             </div>
                         </div>
                     </div>
@@ -197,7 +205,7 @@ const Login = () => {
             <Modal show={warning} centered backdrop="static" size="sm">
                 <Modal.Header className="bg-opacity-75 bg-warning">
                     <Modal.Title className="user-select-none">
-                    Giriş yapılırken bekleyin!
+                        Giriş yapılırken bekleyin!
                     </Modal.Title>
                 </Modal.Header>
 

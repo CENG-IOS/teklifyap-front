@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Offer from "../components/Offer";
 import Footer from "../components/Footer";
-import { useSelector } from "react-redux";
 import BaseURL from '../api/BaseURL'
 import Modal from 'react-bootstrap/Modal';
 import Waves from "../components/Waves";
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 
 export default function Offers() {
+
     const [offersInfo, setOffersInfo] = useState([]);
-    const id = useSelector((state) => state.auth.userID);
     // const Theme = useSelector((state) => state.theme.theme);
     const [examine, setExamine] = useState(false);
-    const [tableData, setTableData] = useState([]);
-    const [title, setTitle] = useState("");
-    const [date, setDate] = useState("");
+    const [data, setData] = useState({});
     const [isEmpty, setIsEmpty] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -23,33 +18,54 @@ export default function Offers() {
         setExamine(!examine)
     }
 
-    let values = {
-        id: id.toString()
-    };
-
     function getTableDatas(data) {
-        setTableData(data)
-        setTitle(data[0].offer.offer_title)
-        setDate(data[0].offer.offer_date.split("T")[0])
+        console.log(data);
+        setData(data)
         toggleExamine()
+    }
+
+    let formatter = new Intl.NumberFormat('tr', {
+        style: 'currency',
+        currency: 'TRY',
+    });
+
+    function downloadHandler() {
+        fetch(BaseURL + 'api/offer/download?offer=' + data.id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/pdf',
+                'Authorization': 'Bearer ' + localStorage.getItem('token').substring(1, 177)
+            }
+        }).then(res => {
+            if (res.ok) {
+                res.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = data.offer_name;
+                    a.click();
+                })
+            }
+        })
+
     }
 
     useEffect(() => {
         setTimeout(() => {
-            fetch(BaseURL + `api/offer/getOffers`, {
-                method: "POST",
+            fetch(BaseURL + `api/offer/getOffers?user=` + localStorage.getItem("userID"), {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
                 },
-                body: JSON.stringify(values)
             })
                 .then((response) => response.json())
                 .then((data) => {
                     setLoading(false)
-                    if (data.data.length === 0)
+                    if (data.length === 0)
                         setIsEmpty(true)
                     else
-                        setOffersInfo(data.data)
+                        setOffersInfo(data)
                 });
         }, 600);
 
@@ -75,11 +91,11 @@ export default function Offers() {
                         {offersInfo.map((item) =>
                             <Offer
                                 m={getTableDatas}
-                                key={item.offer_id}
-                                offer_id={item.offer_id}
-                                title={item.offer_title}
-                                date={item.offer_date.slice(0, 10)}
-                                status={item.offer_status}
+                                key={item.id}
+                                offer_id={item.id}
+                                title={item.title}
+                                date={item.date}
+                                status={item.status}
                             />
                         )}
                         {loading &&
@@ -102,12 +118,13 @@ export default function Offers() {
                 </div>
 
             </div>
+
             <Footer />
 
             <Modal show={examine} onHide={toggleExamine} centered size="lg">
-                <Modal.Header className="bg-opacity-75 bg-primary" closeButton>
+                <Modal.Header className={data && data.status ? "bg-succes" : "bg-danger" + " bg-opacity-75"} closeButton>
                     <Modal.Title className="user-select-none">
-                        {title} <span className="h6">{date} </span>
+                        {data.title} <span className="h6">{data.date} </span>
                     </Modal.Title>
                 </Modal.Header>
 
@@ -124,33 +141,42 @@ export default function Offers() {
                             </tr>
                         </thead>
                         <tbody>
-                            {tableData.map((item, index) =>
+                            {data.materials && data.materials.map((item, index) =>
                                 <tr key={index}>
                                     <td className="text-center"> {index + 1} </td>
-                                    <td>{item.material.material_name}</td>
-                                    {/* <td>{item.offer_material_price_per_unit} </td> */}
-                                    <td>{item.material.material_unit}</td>
-                                    {/* <td>{item.offer_material_unit_quantity} </td> */}
-                                    <td>{Math.floor(item.offer_material_unit_quantity * item.offer_material_price_per_unit * ((item.offer.offer_profit_rate + 100) / 100))} </td>
+                                    <td>{item.material.name}</td>
+                                    <td>{item.material.unit}</td>
+                                    <td>{item.price} </td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
-                    
-                    <Row>
-                        <Col className="d-flex justify-content-end" xs={{ span: 5, offset: 2 }} md={{ span: 3, offset: 6 }} ><b>Toplam : </b></Col>
-                        <Col xs={{ span: 5, offset: 0 }} md={3} >{tableData.length != 0 && tableData[0].offer.offer_total_price}</Col>
-                    </Row>
 
-                    <Row>
-                        <Col className="d-flex justify-content-end" xs={{ span: 5, offset: 2 }} md={{ span: 3, offset: 6 }}><b>KDV Tutarı : </b></Col>
-                        <Col xs={{ span: 5, offset: 0 }} md={3}>{tableData.length != 0 && tableData[0].offer.offer_kdv_price}</Col>
-                    </Row>
 
-                    <Row>
-                        <Col className="d-flex justify-content-end" xs={{ span: 5, offset: 2 }} md={{ span: 3, offset: 6 }}><b>GENEL TOPLAM :</b></Col>
-                        <Col xs={{ span: 5, offset: 0 }} md={3}>{tableData.length != 0 && tableData[0].offer.offer_total_price + tableData[0].offer.offer_kdv_price} <small><small><i>+ SGK stopaj bedeli</i></small></small> </Col>
-                    </Row>
+                    <div className="d-flex flex-row">
+                        <div className="d-flex justify-content-end col-8 col-md-7 col-lg-8 col-xl-9"><b>Ara Toplam : </b></div>
+                        <div className="d-flex justify-content-end col-4 col-md-5 col-lg-4 col-xl-3">{data && formatter.format(data.price).replace('₺', " ") + " ₺"}</div>
+                    </div>
+
+                    <div className="d-flex flex-row">
+                        <div className="d-flex justify-content-end col-8 col-md-7 col-lg-8 col-xl-9"><b>KDV Tutarı : </b></div>
+                        <div className="d-flex justify-content-end col-4 col-md-5 col-lg-4 col-xl-3">{data && formatter.format(data.kdv).replace('₺', " ") + " ₺"}</div>
+                    </div>
+
+                    <div className="d-flex flex-row">
+                        <div className="d-flex justify-content-end col-8 col-md-7 col-lg-8 col-xl-9"><b>SGK Stopaj : </b></div>
+                        <div className="d-flex justify-content-end col-4 col-md-5 col-lg-4 col-xl-3">{data && formatter.format(data.sgk).replace('₺', " ") + " ₺"}</div>
+                    </div>
+
+                    <div className="d-flex flex-row">
+                        <div className="d-flex justify-content-end col-8 col-md-7 col-lg-8 col-xl-9"><span className="h5 fw-bold">GENEL TOPLAM :</span></div>
+                        <div className="d-flex justify-content-end col-4 col-md-5 col-lg-4 col-xl-3"><span className="h5 fw-bold">{data && formatter.format(data.totalPrice).replace('₺', " ") + " ₺"}</span></div>
+                    </div>
+
+                    <div className="d-flex justify-content-end me-2 mt-2">
+                        <button className="btn btn-success" onClick={downloadHandler}>İndir</button>
+                    </div>
+
                 </Modal.Body>
             </Modal>
         </>

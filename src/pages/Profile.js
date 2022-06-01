@@ -32,7 +32,7 @@ const Profile = () => {
     }
 
     function dateConverter() {
-        const date = new Date(info.user_creation_date)
+        const date = new Date(info.creationDate)
         const year = date.getFullYear()
         const month = date.toLocaleString('default', { month: 'long' });
         return {
@@ -43,57 +43,54 @@ const Profile = () => {
 
     function submitHandler(e) {
         e.preventDefault();
-        let date = new Date(document.getElementById("date").value)
-        const offset = date.getTimezoneOffset()
-        date = new Date(date.getTime() - (offset * 60 * 1000))
+
 
         let newUser = {
-            user_id: id,
-            user_name: document.getElementById("name").value,
-            user_surname: document.getElementById("surname").value,
-            user_email: document.getElementById("email").value,
-            user_password: document.getElementById("pass").value,
-            user_creation_date: date.toISOString().split('T')[0]
+            name: document.getElementById("name").value,
+            surname: document.getElementById("surname").value,
+            mail: document.getElementById("email").value,
+            password: document.getElementById("pass").value,            
         }
 
-        fetch(BaseURL + `api/user/updateInformation`, {
-            method: "POST",
+        fetch(BaseURL + `api/user?user=` + localStorage.getItem("userID"), {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
             },
             body: JSON.stringify(newUser),
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.success) {
+                if (data.status === "200 OK") {
                     setSuccess(true)
                 } else {
                     setSuccess(false)
                 }
-                setInfo(data.data)
             });
 
 
         togglePopup()
         setTimeout(() => {
             setIsOpen2(true)
+            window.location.reload()
         }, 300)
     }
 
     useEffect(() => {
         const colors = ["#6664A3", "#ED9CBF", "#9B7FC0", "#FFD9D6", "#F1BD80"]
         setRndColor(colors[Math.floor(Math.random() * colors.length)])
-        fetch(BaseURL + `api/user/userProfile`, {
-            method: "POST",
+        fetch(BaseURL + `api/user?user=` + localStorage.getItem("userID"), {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
             },
-            body: JSON.stringify(values),
         })
             .then((response) => response.json())
             .then((data) => {
-                setInfo(data.data)
-                setFirstLettters(data.data.user_name.charAt(0) + data.data.user_surname.charAt(0))
+                setInfo(data)
+                setFirstLettters(data.name.charAt(0) + data.surname.charAt(0))
                 setLoading(true)
             });
     }, [])
@@ -110,7 +107,7 @@ const Profile = () => {
                         loading ? "profile-wrapper mt-3 mb-4 p-5 pt-4  bg-light text-dark round" : "col-11 col-sm-10 col-md-7 col-lg-6 col-xl-5 col-xxl-4 mt-3 mb-4 p-5 pt-4 bg-light text-dark round"
                     }>
                         {loading ?
-                            <div className="user-select-none text-center mt-3 h2 m-0">{info.user_name + ' ' + info.user_surname}</div>
+                            <div className="user-select-none text-center mt-3 h2 m-0">{info.name + ' ' + info.surname}</div>
                             :
                             <div className="user-select-none text-center mt-3 h2 m-0">
                                 <Placeholder as="p" animation="glow">
@@ -153,7 +150,7 @@ const Profile = () => {
                             <div className="d-flex flex-column col-8">
                                 {loading ?
                                     <>
-                                        <div className="d-inline profile-info"> {info.user_email}</div>
+                                        <div className="d-inline profile-info"> {info.mail}</div>
                                         <div className="d-inline profile-info">*********</div>
                                     </> :
                                     <>
@@ -190,7 +187,7 @@ const Profile = () => {
                             </div>
                             :
                             <div className="d-flex justify-content-end p-0 mt-4">
-                                <Placeholder.Button xs={6} aria-hidden="true" bg="warning"/>
+                                <Placeholder.Button xs={6} aria-hidden="true" bg="warning" />
                             </div>
                         }
 
@@ -211,21 +208,21 @@ const Profile = () => {
                                 <div className="input-group-prepend col-4">
                                     <label className="input-group-text profile-info-label" htmlFor="remember" >Ad :</label>
                                 </div>
-                                <input id="name" required type="text" className="form-control" defaultValue={info.user_name} />
+                                <input id="name" required type="text" className="form-control" defaultValue={info.name} />
                             </div>
 
                             <div className="input-group  mt-2">
                                 <div className="input-group-prepend col-4">
                                     <label className="input-group-text profile-info-label" htmlFor="remember" >Soyad :</label>
                                 </div>
-                                <input id="surname" required type="text" className="form-control" defaultValue={info.user_surname} />
+                                <input id="surname" required type="text" className="form-control" defaultValue={info.surname} />
                             </div>
 
                             <div className="input-group mt-2">
                                 <div className="input-group-prepend col-4">
                                     <label className="input-group-text profile-info-label" htmlFor="remember" >Email :</label>
                                 </div>
-                                <input id="email" required type="email" className="form-control" defaultValue={info.user_email} />
+                                <input id="email" required type="email" className="form-control" defaultValue={info.mail} />
                             </div>
 
                             <div className="input-group mt-2">
@@ -246,7 +243,7 @@ const Profile = () => {
                                 <div className="input-group-prepend col-4">
                                     <label className="input-group-text profile-info-label" htmlFor="remember" >Kayıt tarihi:</label>
                                 </div>
-                                <input id="date" type="text" className="form-control" disabled value={new Date(info.user_creation_date).toLocaleDateString()} />
+                                <input id="date" type="text" className="form-control" disabled value={new Date(info.creationDate).toLocaleDateString()} />
                             </div>
 
                             <div className="d-flex justify-content-end mt-2">

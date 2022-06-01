@@ -9,16 +9,9 @@ import Waves from "../components/Waves";
 export default function Inventory() {
     const [myArray, setmyArray] = useState([]);
     const [show, setShow] = useState(false);
-    const [filterText, setFilterText] = useState("");
-    const [res, setRes] = useState({});
     const [isOpen, setIsopen] = useState(false);
-    const id = useSelector((state) => state.auth.userID);
     const [isEmpty, setIsEmpty] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    let values = {
-        user_id: id,
-    };
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -33,12 +26,14 @@ export default function Inventory() {
     useEffect(() => {
 
         setTimeout(() => {
-            fetch(BaseURL + "api/material/getMaterialByUser", {
-                method: "POST",
+
+            fetch(BaseURL + "api/material/getMaterialByUser" + "?user=" + localStorage.getItem("userID"), {
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
+                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+
+                }
             })
                 .then((response) => response.json())
                 .then((data) => {
@@ -61,26 +56,22 @@ export default function Inventory() {
         let unit = document.getElementById("unit").value;
 
         const material = {
-            material_name: productName,
-            material_unit: unit,
-            material_is_verified: 1,
-            material_price_per_unit: 0,
-            is_fixed: 0,
-            user: {
-                user_id: id
-            }
+            name: productName,
+            unit: unit,
+            pricePerUnit: 0
         }
 
-        fetch(BaseURL + "api/material/add", {
+        fetch(BaseURL + "api/material?user=" + localStorage.getItem("userID"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
             },
             body: JSON.stringify(material),
         })
             .then((response) => response.json())
             .then((data) => {
-                setRes(data)
+                material.id = data.account;
                 setIsopen(true)
             });
 
@@ -88,12 +79,7 @@ export default function Inventory() {
         setmyArray(myArray)
 
         handleClose()
-        window.location.reload()
-    }
-
-    function filterHandler() {
-        let node = document.getElementById("filtre")
-        setFilterText(node.value.toLowerCase())
+        // window.location.reload()
     }
 
     return (
@@ -125,7 +111,7 @@ export default function Inventory() {
                                 <div className="mx-0 mx-sm-0 mx-md-5 mx-lg-0 mx-xl-0 col-10 col-md-8">
                                     <div className="d-flex">
                                         <div className="col-11">
-                                            <input className="form-control" onChange={filterHandler} id="filtre" name="filtre" type="text" />
+                                            <input className="form-control" onClick={() => alert("şimdilik çalışmıyor!")} id="filtre" name="filtre" type="text" />
                                         </div>
                                     </div>
                                 </div>
@@ -151,20 +137,15 @@ export default function Inventory() {
                         <div className="d-flex justify-content-center ">
                             <div className={isEmpty ? "w-100" : "d-flex flex-row flex-wrap justify-content-around"}>
                                 {loading ?
-                                    myArray.filter(item => {
-                                        if (item.material_name.toLowerCase().includes(filterText))
-                                            return item
-                                    }).map((index) =>
-                                        index.material_is_verified == 1 ? (
-                                            <ProductB
-                                                material_id={index.material_id}
-                                                key={index.material_id}
-                                                title={index.material_name}
-                                                unit={index.material_unit}
-                                                is_fixed={index.is_fixed}
-                                                price_per_unit={index.material_price_per_unit}
-                                            />
-                                        ) : null
+                                    myArray.map((index) =>
+                                        <ProductB
+                                            material_id={index.id}
+                                            key={index.id}
+                                            title={index.name}
+                                            unit={index.unit}
+                                            is_fixed={index.fixed}
+                                            price_per_unit={index.pricePerUnit}
+                                        />
                                     ) :
                                     <ProductB
                                         material_id="placeholder"
@@ -221,7 +202,7 @@ export default function Inventory() {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {res.message}
+                    Ürün başarıyla eklendi.
                 </Modal.Body>
             </Modal>
 

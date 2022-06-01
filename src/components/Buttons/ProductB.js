@@ -12,8 +12,7 @@ export default function ProductB(props) {
 
     const [isOpen, setIsOpen] = useState(false);
     const [openRes, setOpenRes] = useState(false);
-    const [res, setRes] = useState({});
-    const [isSure, setIsSure] = useState(false);
+    const [res, setRes] = useState(false);
     const [mateial_id, setMaterialID] = useState(props.material_id);
     const id = useSelector((state) => state.auth.userID);
     const ppu = useRef(0);
@@ -22,57 +21,51 @@ export default function ProductB(props) {
         setIsOpen(!isOpen);
     }
 
-    function openIsSure() {
-        togglePopup()
-        setIsSure(true)
-    }
+    const deleteMaterial = () => {
 
-    const DeleteMaterial = () => {
-        setIsSure(false)
         setTimeout(() => setOpenRes(true), 650)
 
-        fetch(BaseURL + "api/material/delete", {
-            method: "POST",
+        fetch(BaseURL + "api/material?material=" + mateial_id + "&user=" + localStorage.getItem("userID"), {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                deleted: mateial_id,
-            }),
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+            }
         })
             .then((response) => response.json())
             .then((data) => {
-                data.success ? setRes({ success: true, message: data.message }) : setRes({ success: false, message: data.message })
+                if (data.status === "200 OK") {
+                    setRes(true)
+                } else {
+                    setRes(false)
+                }
             });
+        togglePopup()
     }
 
     const updateMaterial = () => {
 
-        fetch(BaseURL + "api/material/update", {
-            method: "POST",
+        setTimeout(() => setOpenRes(true), 650)
+
+        fetch(BaseURL + "api/material?material=" + mateial_id, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
             },
             body: JSON.stringify({
-                material_id: mateial_id,
-                material_name: props.title,
-                material_unit: props.unit,
-                material_price_per_unit: ppu.current.value,
-                material_is_verified: 1,
-                user: {
-                    user_id: id
-                }
+                pricePerUnit: ppu.current.value,
             }),
         })
             .then((response) => response.json())
             .then((data) => {
-                setIsOpen(false)
-                setOpenRes(true)
-                setRes({
-                    success: true,
-                    message: data.message
-                })
+                if (data.status === "200 OK") {
+                    setRes(true)
+                } else {
+                    setRes(false)
+                }
             });
+        togglePopup()
     }
 
 
@@ -132,35 +125,20 @@ export default function ProductB(props) {
                 <Modal.Footer className="d-flex justify-content-evenly">
                     <button className="btn btn-success col-4" onClick={updateMaterial}>Kaydet</button>
                     {props.is_fixed ? null :
-                        <button className="btn btn-danger col-4" onClick={openIsSure}>Sil</button>
+                        <button className="btn btn-danger col-4" onClick={deleteMaterial}>Sil</button>
                     }
 
                 </Modal.Footer>
             </Modal>
 
             <Modal show={openRes} backdrop="static" onHide={() => window.location.reload(false)} centered size="sm">
-                <Modal.Header className={res.success ? "bg-opacity-75 bg-success" : "bg-opacity-75 bg-danger"} closeButton >
-                    <Modal.Title>{!res.success ? "Hata" : "Başarılı!"}</Modal.Title>
+                <Modal.Header className={res ? "bg-opacity-75 bg-success" : "bg-opacity-75 bg-danger"} closeButton >
+                    <Modal.Title>{!res ? "Hata" : "Başarılı!"}</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    {res.message}
+                    {!res ? "Beklenmedik bir hata çıktı!" : "Ürün başarıyla güncellendi!"}
                 </Modal.Body>
-            </Modal>
-
-            <Modal show={isSure} onHide={() => setIsSure(false)} centered size="sm">
-                <Modal.Header className="bg-opacity-75 bg-warning" closeButton >
-                    <Modal.Title>Emin misin?</Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    Mazemeyi silmen ilgili tekliflerde de silmene yol açar!
-                </Modal.Body>
-
-                <Modal.Footer className="d-flex justify-content-evenly">
-                    <button className="btn btn-success col-3" onClick={DeleteMaterial} >Evet</button>
-                    <button className="btn btn-danger col-3" onClick={() => setIsSure(false)} >Hayır</button>
-                </Modal.Footer>
             </Modal>
 
         </>

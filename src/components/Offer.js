@@ -17,13 +17,14 @@ export default function Offer(props) {
 
     const positiveHandler = (e) => {
         e.preventDefault()
-        let status = "true"
-        fetch(BaseURL + `api/offer/updateStatus/${props.offer_id}/${status}`, {
-            method: "POST",
+
+        fetch(BaseURL + `api/offer/changeStatus?offer=${props.offer_id}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
             },
-        }).then((response) => response.json());
+        }).then((response) => response.json())
 
         setStatus("true");
         togglePopup();
@@ -31,31 +32,46 @@ export default function Offer(props) {
 
     const negatiffHandler = (e) => {
         e.preventDefault()
-        let status = "false"
-        fetch(BaseURL + `api/offer/updateStatus/${props.offer_id}/${status}`, {
-            method: "POST",
+
+        fetch(BaseURL + `api/offer/changeStatus?offer=${props.offer_id}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
             },
-        }).then((response) => response.json());
+        }).then((response) => response.json())
 
         setStatus("false");
         togglePopup();
     };
 
-    const examineFunction = () => {
-        fetch(BaseURL + `api/offerMaterial/getMaterialsByOffer`, {
-            method: "POST",
+    const deleteHandler = (e) => {
+        e.preventDefault()
+
+        fetch(BaseURL + `api/offer/delete?offer=${props.offer_id}`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
             },
-            body: JSON.stringify({
-                id: props.offer_id
-            })
+        }).then((response) => response.json())
+
+        togglePopup();
+        window.location.reload();
+    }
+
+    const examineFunction = () => {
+        fetch(BaseURL + "api/offerMaterial?offer=" + props.offer_id, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+            },
         })
             .then((response) => response.json())
             .then((data) => {
-                props.m(data.data)
+                console.log(data);
+                props.m(data)
             })
     }
 
@@ -74,9 +90,9 @@ export default function Offer(props) {
                 ) :
 
                 <div className={
-                    status === "true"
-                        ? "d-flex flex-row bg-opacity-75 bg-success text-white p-3 ps-5 rounded-pill mb-3"
-                        : !Theme ? "d-flex flex-row bg-opacity-75 bg-danger text-white p-3 ps-5 rounded-pill mb-3" : "d-flex flex-row bg-opacity-50 bg-danger text-white p-3 ps-sm-5 rounded-pill mb-3"
+                    status ? "d-flex flex-row bg-opacity-75 bg-success text-white p-3 ps-5 rounded-pill mb-3"
+                        : !Theme ? "d-flex flex-row bg-opacity-75 bg-danger text-white p-3 ps-5 rounded-pill mb-3" :
+                            "d-flex flex-row bg-opacity-50 bg-danger text-white p-3 ps-sm-5 rounded-pill mb-3"
                 }
                 >
                     <div className="d-flex align-items-center col-7">
@@ -137,7 +153,7 @@ export default function Offer(props) {
                         </button>
                         <button
                             className="btn btn-danger mt-2"
-                            onClick={() => alert("silindi")}
+                            onClick={deleteHandler}
                         >
                             Sil
                         </button>

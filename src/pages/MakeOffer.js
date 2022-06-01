@@ -15,12 +15,12 @@ SwiperCore.use([Mousewheel, Pagination]);
 
 export default function MakeOffer(props) {
     const [realData, setRealData] = useState([]);
-    const [name, setName] = useState(true)
+    const [nameCheckBox, setNameCheckBox] = useState(true)
     const [errorSlide1, setErrorSlide1] = useState(false)
     const [errorSlide2, setErrorSlide2] = useState(false)
     const [errorSlide3, setErrorSlide3] = useState(false)
     const [btnEdit, setBtnEdit] = useState(false)
-    const [userInfo, setUserInfo] = useState("")
+    const [name, setName] = useState("")
     const [selectedTitle, setSelectedTitle] = useState()
     const [selectedCompanyName, setSelectedCompanyName] = useState()
     const [selectedProfitRate, setSelectedProfitRate] = useState(0)
@@ -28,15 +28,14 @@ export default function MakeOffer(props) {
     const [selectedUserName, setSelectedUserName] = useState()
     const [selectedRowID, setSelectedRowID] = useState(-1)
     const [selectedMaterials, setSelectedMaterials] = useState([])
-    const [selectedRow, setSelectedRow] = useState()
+    const [selectedDays, setSelectedDays] = useState(0);
+    const [offerMaterials, setOfferMaterials] = useState([])
+    // const [selectedRow, setSelectedRow] = useState()
     const [warning, setWarning] = useState(false)
     const [totalPrice, setTotalPrice] = useState(0)
     const [kdvPrice, setKDVPrice] = useState(0)
     const [SGKPrice, setSGKPrice] = useState(0)
     const id = useSelector((state) => state.auth.userID);
-    let values = {
-        user_id: id,
-    };
     const history = useHistory();
     const [my_swiper, set_my_swiper] = useState({});
 
@@ -60,45 +59,44 @@ export default function MakeOffer(props) {
 
     useEffect(() => {
 
-        fetch(BaseURL + `api/user/getFullName`, {
-            method: "POST",
+        fetch(BaseURL + `api/user/getFullName?user=` + localStorage.getItem("userID"), {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
             },
-            body: JSON.stringify(values),
         })
             .then((response) => response.json())
             .then((data) => {
-                setUserInfo(data.data)
+                setName(data.account)
             });
 
         document.getElementById('custom-date').valueAsDate = new Date();
     }, []);
 
     function nameHandler() {
-        setName(!name)
+        setNameCheckBox(!nameCheckBox)
     }
 
     function fetchForSlide2() {
-        fetch(BaseURL + "api/material/getMaterialByUser", {
-            method: "POST",
+        fetch(BaseURL + "api/material/getMaterialByUser?user=" + localStorage.getItem("userID"), {
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify(values)
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+            }
         })
             .then((response) => response.json())
             .then((data) => {
                 const temp = new Array()
                 for (let i = 0; i < data.length; i++) {
                     temp.push({
-                        material_id: data[i].material_id,
-                        material_name: data[i].material_name,
-                        material_is_verified: data[i].material_is_verified,
-                        material_unit: data[i].material_unit,
-                        material_price_per_unit: 0,
-                        material_unit_quantity: 0,
-                        is_fixed: data[i].is_fixed
+                        material_id: data[i].id,
+                        material_name: data[i].name,
+                        material_unit: data[i].unit,
+                        material_price_per_unit: data[i].pricePerUnit, //birim fiyatı
+                        material_unit_quantity: 0,                     //birim miktarı
+                        is_fixed: data[i].fixed
                     })
                 }
                 setRealData(temp)
@@ -109,12 +107,31 @@ export default function MakeOffer(props) {
     function updateTable() {
         realData[selectedRowID].material_price_per_unit = document.getElementById("price_per_unit").value
         realData[selectedRowID].material_unit_quantity = document.getElementById("unit_quantity").value
-        if (realData[selectedRowID].is_fixed === 1) {
+        if (realData[selectedRowID].is_fixed) {
             document.getElementById("fixed").innerHTML = document.getElementById("price_per_unit").value
         }
 
         document.getElementsByClassName("checkboxs")[selectedRowID].checked = true
         setBtnEdit(false)
+
+        fetch(BaseURL + "api/material?material=" + realData[selectedRowID].material_id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+            },
+            body: JSON.stringify({
+                pricePerUnit: realData[selectedRowID].material_price_per_unit,
+
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+
+            });
+
+
+
     }
 
     function nextSlide(e) {
@@ -134,12 +151,14 @@ export default function MakeOffer(props) {
         let date = document.getElementById("custom-date")
         let profit_rate = document.getElementById("profit-rate")
         let name = document.getElementById("name")
+        let day = document.getElementById("day")
 
         inputs.push(offer_title)
         inputs.push(company_name)
         inputs.push(date)
         inputs.push(name)
         inputs.push(profit_rate)
+        inputs.push(day)
 
         let flag = true;
 
@@ -155,6 +174,7 @@ export default function MakeOffer(props) {
             setSelectedCompanyName(company_name.value)
             setSelectedProfitRate(profit_rate.value)
             setSelectedUserName(name.value)
+            setSelectedDays(day.value)
         }
 
         return flag;
@@ -163,6 +183,7 @@ export default function MakeOffer(props) {
     function checkSlide2() {
         let checkboxs = document.getElementsByClassName("checkboxs")
         const checked = []
+
         for (let i = 0; i < checkboxs.length; i++) {
             const item = checkboxs[i];
             if (item.checked)
@@ -174,6 +195,8 @@ export default function MakeOffer(props) {
         }
         else {
             const selectedMaterials = []
+            const offerMaterials = []
+
             for (let i = 0; i < checked.length; i++) {
                 const element = checked[i];
                 if (element.parentElement.nextElementSibling.nextElementSibling.textContent == 0 ||
@@ -199,6 +222,10 @@ export default function MakeOffer(props) {
                     offer_material_unit_quantity: element.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent.trim(),
                     offer_material_cost: Math.floor(~~(element.parentElement.nextElementSibling.nextElementSibling.textContent.trim()) * ~~(element.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent.trim()) * ((~~(selectedProfitRate) + 100) / 100))
                 })
+                offerMaterials.push({
+                    id: element.parentElement.parentElement.id,
+                    unitPrice: element.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent.trim()
+                })
             }
             let temp = 0
             selectedMaterials.forEach(item => {
@@ -211,53 +238,59 @@ export default function MakeOffer(props) {
             setKDVPrice(((temp * 18) / 100))
             setTotalPrice(temp)
             setSelectedMaterials(selectedMaterials)
+            setOfferMaterials(offerMaterials)
             return true
         }
     }
 
+    function checkHandler(event, is_fixed) {
+        if (is_fixed) {
+            event.target.checked = true
+        }
+    }
+
+
     function makeOffer() {
-        fetch(BaseURL + "api/offer/make", {
+
+        let offer_materials = []
+
+        for (let i = 0; i < selectedMaterials.length; i++) {
+            const element = selectedMaterials[i];
+            offer_materials.push({
+                id: element.material.material_id,
+                unitQuantity: element.offer_material_unit_quantity
+            })
+
+        }
+
+        let body = {
+            title: selectedTitle,
+            toWho: selectedCompanyName,
+            totalPrice: kdvPrice + totalPrice + ~~SGKPrice,
+            date: selectedDate,
+            profitRate: selectedProfitRate,
+            userName: selectedUserName,
+            day: selectedDays,
+            sgk: ~~SGKPrice,
+            materials: offer_materials
+        }
+
+        fetch(BaseURL + "api/offer?user=" + localStorage.getItem("userID"), {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
             },
-            body: JSON.stringify({
-                offer_title: selectedTitle,
-                offer_company_name: selectedCompanyName,
-                offer_status: false,
-                offer_total_price: totalPrice,
-                offer_date: selectedDate,
-                offer_profit_rate: selectedProfitRate,
-                offer_username: selectedUserName,
-                offer_kdv_price: kdvPrice,
-                user: {
-                    user_id: values.user_id
-                }
-            })
+            body: JSON.stringify(body)
         })
             .then((response) => response.json())
             .then((data) => {
+                if (data.status === "200 OK") {
+                    setWarning(true)
+                } else
+                    setWarning(false)
+            })
 
-
-
-                selectedMaterials.forEach((item) => {
-                    item.offer.offer_id = data.data
-                })
-
-                fetch(BaseURL + "api/offerMaterial/makes", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(
-                        selectedMaterials
-                    )
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.success) setWarning(true)
-                    });
-            });
     }
 
     return (
@@ -272,7 +305,7 @@ export default function MakeOffer(props) {
                 }}
                 className="mySwiper">
                 <SwiperSlide className="overflow-auto pt-5">
-                    <div className="col-10 col-xl-5 col-lg-6 col-md-7 col-sm-8">
+                    <div className="col-10 col-xl-6 col-lg-6 col-md-8 col-sm-8">
                         <div className="mb-3 text-product">
                             <label className="form-label" htmlFor="offer-title">TEKLİFİN BAŞLIĞI:</label>
                             <input className="form-control" placeholder="Örnek:  Alt Yapı İmalatı" type="text" id="offer-title" name="offer-title" />
@@ -297,15 +330,22 @@ export default function MakeOffer(props) {
                             </div>
                         </div>
 
+                        <div className="mb-3 text-product row">
+                            <label className="col-6 col-lg-5 col-md-6 col-sm-7 col-form-label" htmlFor="profit-rate">TAHMİNİ BİTİŞ SÜRESİ:</label>
+                            <div className="col-6 col-lg-7 col-md-6 col-sm-5">
+                                <input className="form-control" placeholder="Örnek: 20" type="number" defaultValue="0" min="0" id="day" name="day" />
+                            </div>
+                        </div>
+
                         <div className="mb-3 form-check">
                             <input className="form-check-input" type="checkbox" id="name-check" name="name-check" onClick={nameHandler} />
                             <label className="form-check-label" htmlFor="name-check">Farklı bir kişi adına teklif yapacağım.</label>
                         </div>
 
-                        <div className={name ? "d-none" : "mb-3 text-product row"}>
+                        <div className={nameCheckBox ? "d-none" : "mb-3 text-product row"}>
                             <label className="col-lg-3 col-form-label" htmlFor="name">Ad Soyad:</label>
                             <div className="col-lg-9">
-                                <input className="form-control" type="text" defaultValue={userInfo} id="name" name="name" />
+                                <input className="form-control" type="text" defaultValue={name} id="name" name="name" />
 
                             </div>
                         </div>
@@ -344,24 +384,26 @@ export default function MakeOffer(props) {
                                 </tr>
                             </thead>
                             <tbody id="tableRows">
-                                {realData.map((e, i) =>
-                                    <tr key={e.material_id} id={e.material_id} className={e.is_fixed ? "table-warning" : ""} >
-                                        <td className="text-center"> <input className="form-check-input checkboxs" type="checkbox" defaultChecked={e.is_fixed} onClick={(event) => e.is_fixed ? event.target.checked = true : null} /> </td>
-                                        <td>{e.material_name}</td>
-                                        <td id={e.is_fixed ? "fixed" : null}>{e.is_fixed ? 0 : e.material_price_per_unit} </td>
-                                        <td className="d-none d-sm-table-cell">{e.is_fixed ? "-" : e.material_unit}</td>
-                                        <td>{e.is_fixed ? 1 : e.material_unit_quantity} </td>
-                                        <td>
-                                            <div className="d-flex justify-content-center">
-                                                <button className="btn btn-success" onClick={(e) => {
-                                                    setSelectedRowID(i)
-                                                    setSelectedRow(e.target)
-                                                    setBtnEdit(true)
-                                                }} ><i className="bi bi-pencil-square"></i></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
+                                {realData.map((e, i) => {
+
+                                    return (
+                                        <tr key={e.material_id} id={e.material_id} className={e.is_fixed ? "table-warning" : ""} >
+                                            <td className="text-center"> <input className="form-check-input checkboxs" type="checkbox" defaultChecked={e.is_fixed} onClick={(event) => checkHandler(event, e.is_fixed)} /> </td>
+                                            <td>{e.material_name}</td>
+                                            <td id={e.is_fixed ? "fixed" : null}>{e.material_price_per_unit} </td>
+                                            <td className="d-none d-sm-table-cell">{e.material_unit}</td>
+                                            <td>{e.is_fixed ? 1 : e.material_unit_quantity} </td>
+                                            <td>
+                                                <div className="d-flex justify-content-center">
+                                                    <button className="btn btn-success" onClick={(e) => {
+                                                        setSelectedRowID(i)
+                                                        setBtnEdit(true)
+                                                    }} ><i className="bi bi-pencil-square"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )
+                                })}
 
                             </tbody>
                         </table>
@@ -424,8 +466,8 @@ export default function MakeOffer(props) {
                         </Row>
 
                         <Row>
-                            <Col className="d-flex justify-content-sm-end" xs={{ span: 5, offset: 2 }} md={{ span: 3, offset: 6 }}><b> <small>Genel Toplam: </small> </b></Col>
-                            <Col className="d-flex justify-content-end" xs={{ span: 4, offset: 0 }} md={3}>{formatter.format(kdvPrice + totalPrice + ~~SGKPrice).replace('₺', " ") + " ₺"} </Col>
+                            <Col className="d-flex justify-content-sm-end" xs={{ span: 5, offset: 2 }} md={{ span: 3, offset: 6 }}><span className='h5 fw-bold'>Genel Toplam: </span></Col>
+                            <Col className="d-flex justify-content-end h5 fw-bold" xs={{ span: 4, offset: 0 }} md={3}>{formatter.format(kdvPrice + totalPrice + ~~SGKPrice).replace('₺', " ") + " ₺"} </Col>
                         </Row>
 
                         <div className="d-flex justify-content-sm-end justify-content-center mt-3">
@@ -449,8 +491,8 @@ export default function MakeOffer(props) {
                     }
                     {errorSlide3 && "En az bir satırın birim fiyatı ya da birim miktarı sıfır!"
                     }
-                    {warning && "Teklif başarılı bir şekilde yapıldı. Tekliflerim sekmesinden görüntüleyebilirsiniz!"
-                    }
+                    {warning ? "Teklif başarılı bir şekilde yapıldı. Tekliflerim sekmesinden görüntüleyebilirsiniz!" : "Bir hata meydana geldi lütfen tekrar deneyin!"}
+
                 </Modal.Body>
             </Modal>
 
@@ -477,7 +519,7 @@ export default function MakeOffer(props) {
                                         <label className="col-form-label" htmlFor="unit_quantity"><b>Birim Miktarı :</b></label>
                                     </Col>
                                     <Col>
-                                        <input className="form-control" min="0" disabled={realData[selectedRowID].is_fixed === 1 ? true : false} defaultValue={realData[selectedRowID].is_fixed === 1 ? 1 : realData[selectedRowID].material_unit_quantity} id="unit_quantity" name="unit_quantity" type="number" />
+                                        <input className="form-control" min="0" disabled={realData[selectedRowID].is_fixed ? true : false} defaultValue={realData[selectedRowID].is_fixed ? 1 : realData[selectedRowID].material_unit_quantity} id="unit_quantity" name="unit_quantity" type="number" />
                                     </Col>
                                 </Row>
                             </Container>
