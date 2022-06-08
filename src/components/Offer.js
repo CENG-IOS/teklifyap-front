@@ -22,7 +22,7 @@ export default function Offer(props) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
         }).then((response) => response.json())
 
@@ -37,7 +37,7 @@ export default function Offer(props) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
         }).then((response) => response.json())
 
@@ -52,7 +52,7 @@ export default function Offer(props) {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177)
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
         }).then((response) => response.json())
 
@@ -65,7 +65,7 @@ export default function Offer(props) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
         })
             .then((response) => response.json())

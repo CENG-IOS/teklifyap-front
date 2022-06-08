@@ -56,7 +56,7 @@ const Profile = () => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
             body: JSON.stringify(newUser),
         })
@@ -84,7 +84,7 @@ const Profile = () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
         })
             .then((response) => response.json())

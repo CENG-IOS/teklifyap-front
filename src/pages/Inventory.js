@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import ProductB from "../components/Buttons/ProductB";
 import Footer from "../components/Footer";
 import Modal from 'react-bootstrap/Modal';
@@ -31,7 +30,7 @@ export default function Inventory() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
 
                 }
             })
@@ -65,7 +64,7 @@ export default function Inventory() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             },
             body: JSON.stringify(material),
         })

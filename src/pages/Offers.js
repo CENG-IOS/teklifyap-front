@@ -34,7 +34,7 @@ export default function Offers() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/pdf',
-                'Authorization': 'Bearer ' + localStorage.getItem('token').substring(1, 177)
+                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
             }
         }).then(res => {
             if (res.ok) {
@@ -56,7 +56,7 @@ export default function Offers() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
                 },
             })
                 .then((response) => response.json())
