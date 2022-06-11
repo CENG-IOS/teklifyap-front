@@ -57,7 +57,7 @@ const Login = () => {
                 if (data.status === "200") {
 
                     dispatch(AuthActions.login(data));
-                    // history.push("/");
+                    history.push("/");
                 } else if (data.status === "401 Unauthorized") {
                     setWarning(true);
                 } else if (data.status === "500") {
