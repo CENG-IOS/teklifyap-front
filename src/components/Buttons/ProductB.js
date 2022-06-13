@@ -29,7 +29,7 @@ export default function ProductB(props) {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token"),
             }
         })
             .then((response) => response.json())
@@ -51,7 +51,7 @@ export default function ProductB(props) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 177),
+                "Authorization": "Bearer " + localStorage.getItem("token"),
             },
             body: JSON.stringify({
                 pricePerUnit: ppu.current.value,
@@ -72,7 +72,7 @@ export default function ProductB(props) {
     return (
         <>
             <div className="m-3">
-                <div onClick={props.catcher} className="btn product-btn d-flex flex-column justify-content-around round" onClick={props.title === "placeholder" ? null : togglePopup}>
+                <div className="btn product-btn d-flex flex-column justify-content-around round" onClick={props.title === "placeholder" ? null : togglePopup}>
                     <div className="d-flex position-relative justify-content-center z-index-fixer">
                         <div className="position-absolute d-flex justify-content-center align-items-center h-100 product-text ">
                             {props.title === "placeholder" ?

@@ -63,7 +63,7 @@ export default function MakeOffer(props) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
         })
             .then((response) => response.json())
@@ -83,7 +83,7 @@ export default function MakeOffer(props) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         })
             .then((response) => response.json())
@@ -118,7 +118,7 @@ export default function MakeOffer(props) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
             body: JSON.stringify({
                 pricePerUnit: realData[selectedRowID].material_price_per_unit,
@@ -279,7 +279,7 @@ export default function MakeOffer(props) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token")
             },
             body: JSON.stringify(body)
         })
