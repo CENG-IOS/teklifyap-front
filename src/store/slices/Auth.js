@@ -16,13 +16,13 @@ const AuthSlice = createSlice({
     name: "Authentication",
     initialState,
     reducers: {
-        login(state, action) {
+        login(state = initialState, action) {
+            state.authentication = true;
+
             localStorage.setItem("token", JSON.stringify(action.payload.token));
             localStorage.setItem("userID", JSON.stringify(action.payload.userID));
             localStorage.setItem("authentication", true);
-            state.token = action.payload.token;
-            state.userID = action.payload.userID;
-            state.authentication = true;
+
         },
         logout() {
             localStorage.removeItem("token");

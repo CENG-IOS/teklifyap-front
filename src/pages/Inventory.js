@@ -30,7 +30,7 @@ export default function Inventory() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
 
                 }
             })
@@ -64,7 +64,7 @@ export default function Inventory() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token"),
             },
             body: JSON.stringify(material),
         })

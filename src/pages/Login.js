@@ -52,12 +52,12 @@ const Login = () => {
         })
             .then((response) => response.json())
             .then((data) => {
-                // console.log(data);
-
                 if (data.status === "200") {
 
                     dispatch(AuthActions.login(data));
+
                     history.push("/");
+
                 } else if (data.status === "401 Unauthorized") {
                     setWarning(true);
                 } else if (data.status === "500") {

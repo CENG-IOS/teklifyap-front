@@ -8,7 +8,6 @@ import Waves from "../components/Waves";
 export default function Offers() {
 
     const [offersInfo, setOffersInfo] = useState([]);
-    // const Theme = useSelector((state) => state.theme.theme);
     const [examine, setExamine] = useState(false);
     const [data, setData] = useState({});
     const [isEmpty, setIsEmpty] = useState(false);
@@ -34,7 +33,7 @@ export default function Offers() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/pdf',
-                "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                "Authorization": "Bearer " + localStorage.getItem("token")
             }
         }).then(res => {
             if (res.ok) {
@@ -56,7 +55,7 @@ export default function Offers() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token").substring(1, 200),
+                    "Authorization": "Bearer " + localStorage.getItem("token")
                 },
             })
                 .then((response) => response.json())
