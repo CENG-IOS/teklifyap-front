@@ -5,7 +5,6 @@ import Buttons from "../components/Buttons/Buttons";
 import { useHistory } from "react-router-dom";
 import warnIng from "../images/warning.svg";
 import { useSelector } from "react-redux";
-import ToolTip from "../components/Inputs/ToolTip";
 import Modal from 'react-bootstrap/Modal';
 import BaseURL from '../api/BaseURL'
 import FakeLoader from "../components/FakeLoader";
@@ -148,7 +147,6 @@ const Register = (props) => {
                                                 ></Input>
                                             </div>
 
-                                            <ToolTip title1="Ad ve soyad yalnızca rakam veya harflerden oluşabilir."></ToolTip>
                                         </div>
 
                                         <div className="mt-3">
@@ -169,10 +167,7 @@ const Register = (props) => {
                                                     maxlength="35"
                                                 ></Input>
                                             </div>
-                                            <ToolTip
-                                                title1="Email @abc.com yapısı ile bitmeli"
-                                                title2="ve öncesinde özel karakter içermemelidir."
-                                            ></ToolTip>
+                                         
                                         </div>
 
                                         <div className="mt-3">
@@ -184,12 +179,7 @@ const Register = (props) => {
                                                 ></Input>
                                             </div>
 
-                                            <ToolTip
-                                                title1="Şifre en az 6 karakter içermeli;"
-                                                title2="*En az bir büyük harf,"
-                                                title3="*En az bir rakam,"
-                                                title4="*En az bir sembol barındırmalıdır."
-                                            ></ToolTip>
+                                         
                                         </div>
 
                                         <div className="mt-3">
@@ -246,8 +236,6 @@ const Register = (props) => {
                                             </div>
                                         </div>
 
-                                        <ToolTip title1="Yakın zamanda eklenecek."></ToolTip>
-
                                         <div className="mt-2">
                                             <div className="hover-me">
                                                 <div className="d-flex justify-content-center">
@@ -258,7 +246,6 @@ const Register = (props) => {
                                                 </div>
 
                                             </div>
-                                            <ToolTip title1="Yakın zamanda eklenecek."></ToolTip>
                                         </div>
                                     </div>
                                 </div>
