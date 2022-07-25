@@ -19,7 +19,7 @@
     "html2pdf.js": "^0.10.1",
     "jquery": "^3.6.0",
     "mongoose": "^5.13.5",
-    "node": "^16.9.1",
+    "node": "^16.16.0",
     "node-sass": "^6.0.1",
     "react": "^17.0.0",
     "react-body-backgroundcolor": "^1.2.1",

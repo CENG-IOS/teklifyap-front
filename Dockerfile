@@ -4,8 +4,8 @@ FROM node:16.13.0
 COPY ./package.json ./
 RUN npm install
 COPY . .
-RUN npm run build --production
+RUN npm run build
 
 RUN npm install -g serve
 CMD serve -s build
-EXPOSE 3001
+EXPOSE 3000
