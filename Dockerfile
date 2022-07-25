@@ -1,11 +1,11 @@
-FROM node:16.13.0
-
-# WORKDIR /frontend
-COPY ./package.json ./
-RUN npm install
-COPY . .
+FROM node:16.16.0 as build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+COPY . ./
 RUN npm run build
 
-RUN npm install -g serve
-CMD serve -s build
 EXPOSE 3000
