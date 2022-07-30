@@ -1,10 +1,11 @@
-version: "3"
+version: "2"
 services:
   teklifyap_frontend:
     build: .
     container_name: teklifyap_frontend
     ports:
       - "3000:3000"
+      - "80:3000"
     volumes:
       - ./:/teklifyap_frontend
       - /teklifyap_frontend/node_modules
