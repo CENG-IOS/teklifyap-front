@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import leftVector from "../../images/leftVector.svg";
 import middleVector from "../../images/middleVector.svg";
 import rightVector from "../../images/rightVector.svg";
@@ -87,7 +87,7 @@ export default function ProductB(props) {
                             className="position-absolute rightV mt-4 "
                             alt='rightVector'
                         ></img>
-                        <img src={middleVector} className="middleV"></img>
+                        <img src={middleVector} className="middleV" alt="alt"></img>
                         <img
                             src={leftVector}
                             className="position-absolute leftV mt-3"

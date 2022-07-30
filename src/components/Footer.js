@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import footer from "../images/footer.svg";
 import logo from "../images/logo.svg";
-import googlePlay from "../images/googlePlay.png";
 import icon from "../images/linkedin.png";
 
 export default class Footer extends Component {
@@ -15,10 +14,8 @@ export default class Footer extends Component {
         <div className="row position-relative p-0 m-0">
           <div className="col-2"></div>
           <div className="col-md-4 d-flex justify-content-center align-items-center">
-            {/* <img className="logo" src={logo} alt='logo'></img> */}
           </div>
           <div className="col-md-4 d-flex justify-content-center align-items-center gplay">
-            {/* <img className="gPlay w-75" src={googlePlay} alt='gPlay'></img> */}
           </div>
           <div className="col-2"></div>
         </div>

@@ -3,7 +3,6 @@ import background from "../images/bg.jpg";
 import Buttons from "../components/Buttons/Buttons";
 import Input from "../components/Inputs/Input";
 import { Link, useHistory } from "react-router-dom";
-import UseHttp from "../api/useHttp";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthActions } from "../store/slices/Auth";
 import warnIng from "../images/warning.svg";
@@ -17,8 +16,6 @@ const Login = () => {
     const [warning, setWarning] = useState(false);
     const [info, setInfo] = useState({});
     const Theme = useSelector((state) => state.theme.theme);
-    const Auth = useSelector((state) => state.auth.authentication);
-    const { isLoading, error, sendRequest: sendValues } = UseHttp();
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -86,29 +83,6 @@ const Login = () => {
                                         : "d-flex justify-content-center flex-column align-items-center round round-dark-theme"
                                 }
                             >
-                                {/* <div className="mb-3 mt-5">
-                                    <div className="hover-me">
-                                        <Buttons title="Facebook İle Giriş Yap" disabled={true} />
-                                    </div>
-                                    <ToolTip title1="Yakın zamanda eklenecek."></ToolTip>
-                                </div>
-                                <div>
-                                    <div className="hover-me">
-                                        <Buttons title="Google İle Giriş Yap" disabled={true} />
-                                    </div>
-                                    <ToolTip title1="Yakın zamanda eklenecek."></ToolTip>
-                                </div>
-
-                                <div
-                                    className={
-                                        !Theme
-                                            ? "d-inline text-center mt-3 or-text or-text-default-theme user-select-none "
-                                            : "d-inline text-center mt-3 or-text or-text-dark-theme user-select-none "
-                                    }
-                                >
-                                    veya
-                                </div> */}
-
                                 <form
                                     onSubmit={loginHandler}
                                     className="d-flex flex-column align-items-center mt-4"
@@ -164,10 +138,10 @@ const Login = () => {
                                         </label>
                                     </div>
 
-                                    {info.success == false && (
+                                    {info.success === false && (
                                         <div className="col-11 user-select-none">
                                             <div className="d-flex align-self-start">
-                                                <img className="warning-img d-inline" src={warnIng} />
+                                                <img className="warning-img d-inline" src={warnIng}  alt="alt"/>
                                                 <div className="ms-1 warning-text">
                                                     Email veya şifre yanlış
                                                 </div>
@@ -175,7 +149,7 @@ const Login = () => {
                                         </div>
                                     )}
                                     <div className="mt-3 w-100">
-                                        <Buttons title="Giriş Yap" disabled={info.success ? true : false} />
+                                        <Buttons title="Giriş Yap" disabled={!!info.success} />
                                     </div>
 
                                 </form>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, {
     Mousewheel, Pagination
@@ -30,16 +29,14 @@ export default function MakeOffer(props) {
     const [selectedMaterials, setSelectedMaterials] = useState([])
     const [selectedDays, setSelectedDays] = useState(0);
     const [offerMaterials, setOfferMaterials] = useState([])
-    // const [selectedRow, setSelectedRow] = useState()
     const [warning, setWarning] = useState(false)
     const [totalPrice, setTotalPrice] = useState(0)
     const [kdvPrice, setKDVPrice] = useState(0)
     const [SGKPrice, setSGKPrice] = useState(0)
-    const id = useSelector((state) => state.auth.userID);
     const history = useHistory();
     const [my_swiper, set_my_swiper] = useState({});
 
-    var formatter = new Intl.NumberFormat('tr', {
+    const formatter = new Intl.NumberFormat('tr', {
         style: 'currency',
         currency: 'TRY',
     });
@@ -88,7 +85,7 @@ export default function MakeOffer(props) {
         })
             .then((response) => response.json())
             .then((data) => {
-                const temp = new Array()
+                const temp = []
                 for (let i = 0; i < data.length; i++) {
                     temp.push({
                         material_id: data[i].id,
@@ -144,7 +141,7 @@ export default function MakeOffer(props) {
     }
 
     function checkSlide1() {
-        let inputs = new Array();
+        let inputs = [];
 
         let offer_title = document.getElementById("offer-title")
         let company_name = document.getElementById("company-name")
@@ -163,7 +160,7 @@ export default function MakeOffer(props) {
         let flag = true;
 
         inputs.forEach(element => {
-            if (element.value == "") {
+            if (element.value === "") {
                 flag = false
             }
         });
@@ -189,7 +186,7 @@ export default function MakeOffer(props) {
             if (item.checked)
                 checked.push(item)
         }
-        if (checked.length == 0) {
+        if (checked.length === 0) {
             setErrorSlide2(true)
             return false
         }
@@ -199,8 +196,8 @@ export default function MakeOffer(props) {
 
             for (let i = 0; i < checked.length; i++) {
                 const element = checked[i];
-                if (element.parentElement.nextElementSibling.nextElementSibling.textContent == 0 ||
-                    element.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent == 0) {
+                if (element.parentElement.nextElementSibling.nextElementSibling.textContent === 0 ||
+                    element.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.textContent === 0) {
                     setErrorSlide3(true)
                     return false
                 }
@@ -500,7 +497,7 @@ export default function MakeOffer(props) {
                 {btnEdit &&
                     <>
                         <Modal.Header className="bg-opacity-75 bg-warning" closeButton>
-                            <Modal.Title>Düzenle ~ <span className="h6">{realData.length != 0 && selectedRowID != -1 ? realData[selectedRowID].material_name : ""}</span> </Modal.Title>
+                            <Modal.Title>Düzenle ~ <span className="h6">{realData.length !== 0 && selectedRowID !== -1 ? realData[selectedRowID].material_name : ""}</span> </Modal.Title>
                         </Modal.Header>
 
                         <Modal.Body>
@@ -519,7 +516,7 @@ export default function MakeOffer(props) {
                                         <label className="col-form-label" htmlFor="unit_quantity"><b>Birim Miktarı :</b></label>
                                     </Col>
                                     <Col>
-                                        <input className="form-control" min="0" disabled={realData[selectedRowID].is_fixed ? true : false} defaultValue={realData[selectedRowID].is_fixed ? 1 : realData[selectedRowID].material_unit_quantity} id="unit_quantity" name="unit_quantity" type="number" />
+                                        <input className="form-control" min="0" disabled={!!realData[selectedRowID].is_fixed} defaultValue={realData[selectedRowID].is_fixed ? 1 : realData[selectedRowID].material_unit_quantity} id="unit_quantity" name="unit_quantity" type="number" />
                                     </Col>
                                 </Row>
                             </Container>

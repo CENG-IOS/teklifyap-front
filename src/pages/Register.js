@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState} from "react";
 import background from "../images/bg.jpg";
 import Input from "../components/Inputs/Input";
 import Buttons from "../components/Buttons/Buttons";
@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import BaseURL from '../api/BaseURL'
 import FakeLoader from "../components/FakeLoader";
 
-const Register = (props) => {
+const Register = () => {
     const [name, setName] = useState("");
     const [surname, setSurname] = useState("");
     const [email, setEmail] = useState("");
@@ -48,15 +48,14 @@ const Register = (props) => {
         event.preventDefault();
         /* getting current date*/
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, "0");
-        var mm = String(today.getMonth() + 1).padStart(2, "0");
-        var yyyy = today.getFullYear();
+        String(today.getDate()).padStart(2, "0");
+        String(today.getMonth() + 1).padStart(2, "0");
+        today.getFullYear();
         /*  creationDate: new Date(),*/
 
         let nameController = /^[a-zA-ZğüşöçİĞÜŞÖÇ1234567890]+$/.test(name);
         let surnameController = /^[a-zA-ZğüşöçİĞÜŞÖÇ1234567890]+$/.test(surname);
-        let reg = /^\d+$/.test(password);
-
+        /^\d+$/.test(password);
         const values = {
             name: name,
             surname: surname,
@@ -64,11 +63,11 @@ const Register = (props) => {
             password: password
         };
 
-        if (password != passwordAgain) {
+        if (password !== passwordAgain) {
             setWarning((oldArray) => [...oldArray, "Şifreler uyuşmuyor."]);
             return;
         } else if (
-            password == password.toLowerCase ||
+            password === password.toLowerCase ||
             password.length < 6 ||
             !/\d/.test(password) ||
             !/[$-/:-?{-~!"^_`\[\]]/.test(password)
@@ -125,14 +124,12 @@ const Register = (props) => {
         <React.Fragment>
 
             <div className="container-fluid position-relative overflow-hidden vh-100 p-0">
-                <img className="background-img  " src={background}></img>
+                <img alt="alt" className="background-img" src={background}></img>
                 <div className="img-cover-color"></div>
 
                 <div className="container mt-5">
                     <div className="d-flex justify-content-center">
                         <div className={!Theme ? "p-5 round round-default-theme" : "p-5 round round-dark-theme"}>
-                            {//col-12 col-sm-12 col-md-11 col-lg-10 col-xl-8
-                            }
                             <div className="d-flex flex-column flex-lg-row">
 
                                 <div className="col-lg-5">
@@ -193,7 +190,7 @@ const Register = (props) => {
                                         {warning.map((index) => (
                                             <div className="col-11 user-select-none mt-3">
                                                 <div className="d-flex align-self-start">
-                                                    <img className="warning-img d-inline" src={warnIng} />
+                                                    <img alt="alt" className="warning-img d-inline" src={warnIng} />
                                                     <div className="ms-1 warning-text">{index}</div>
                                                 </div>
                                             </div>
@@ -204,9 +201,7 @@ const Register = (props) => {
                                                 title="Kayıt Ol"
                                                 disabled={
                                                     myArray != null
-                                                        ? myArray.success
-                                                            ? true
-                                                            : false
+                                                        ? !!myArray.success
                                                         : null
                                                 }
                                             ></Buttons>

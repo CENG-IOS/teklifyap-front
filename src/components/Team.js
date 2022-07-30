@@ -8,8 +8,6 @@ import ic from "../images/ic.png";
 import se from "../images/se.png";
 import reactLOGO from "../images/react-logo.png";
 import springBootLOGO from "../images/spring-boot.png";
-import erDiagramLOGO from "../images/spring-boot.png";
-import databseLOGO from "../images/spring-boot.png";
 import mysqlLOGOfrom from "../images/Mysql_logo.png";
 export const Team = () => {
     return (
@@ -22,7 +20,7 @@ export const Team = () => {
                         <div className="col-md-2 d-flex flex-column align-items-center firstPerson pb-5">
                             <section className="scroll-container">
                                 <div className="js-scroll fade-in-bottom-top d-flex flex-column align-items-center">
-                                    <div className="circle1"><img src={ic} className='w-100 logo-circled'></img></div>
+                                    <div className="circle1"><img src={ic} className='w-100 logo-circled' alt="alt"></img></div>
 
                                     <div className="text-center mt-5">
                                         <b>
@@ -36,8 +34,8 @@ export const Team = () => {
                                         <img className="roles" src={role} alt='role'></img>
                                     </div>
                                     <div className="d-flex justify-content-center flex-column tech-logos">
-                                        <img src={reactLOGO} ></img>
-                                        <img src={springBootLOGO}></img>
+                                        <img src={reactLOGO}  alt="alt"></img>
+                                        <img src={springBootLOGO} alt="alt"></img>
                                     </div>
                                 </div>
                             </section>
@@ -46,7 +44,7 @@ export const Team = () => {
                         <div className="col-md-2 d-flex flex-column align-items-center secondPerson pb-5">
                             <section className="scroll-container">
                                 <div className="js-scroll fade-in-bottom-top d-flex flex-column align-items-center">
-                                    <div className="circle1"><img src={oe} className='w-100 logo-circled'></img></div>
+                                    <div className="circle1"><img src={oe} className='w-100 logo-circled' alt="alt"></img></div>
 
                                     <div className="text-center mt-5 ">
                                         <b>
@@ -61,8 +59,8 @@ export const Team = () => {
                                     </div>
 
                                     <div className="d-flex justify-content-center flex-column tech-logos">
-                                        <img src={reactLOGO}></img>
-                                        <img src={springBootLOGO}></img>
+                                        <img src={reactLOGO} alt="alt"></img>
+                                        <img src={springBootLOGO} alt="alt"></img>
                                     </div>
                                 </div>
                             </section>
@@ -71,7 +69,7 @@ export const Team = () => {
                         <div className="col-md-2 d-flex flex-column align-items-center thirdPerson pb-5">
                             <section className="scroll-container">
                                 <div className="js-scroll fade-in-bottom-top d-flex flex-column align-items-center">
-                                    <div className="circle1"><img src={se} className='w-100 logo-circled'></img></div>
+                                    <div className="circle1"><img alt="alt" src={se} className='w-100 logo-circled'></img></div>
 
                                     <div className="text-center mt-5 ">
                                         <b>
@@ -86,7 +84,7 @@ export const Team = () => {
                                         <img className="roles" src={role} alt='role'></img>
                                     </div>
                                     <div className="d-flex justify-content-center flex-column tech-logos">
-                                        <img src={mysqlLOGOfrom}></img>
+                                        <img alt="alt" src={mysqlLOGOfrom}></img>
                                     </div>
                                 </div>
                             </section>

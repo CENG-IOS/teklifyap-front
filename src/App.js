@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     BrowserRouter,
     Route,
@@ -23,7 +23,6 @@ import MakeOfferPage from "./pages/MakeOffer";
 const App = () => {
     const Auth = useSelector((state) => state.auth.authentication);
     const Theme = useSelector((state) => state.theme.theme);
-    const [progress, setProgress] = useState(0);
     document.body.style = !Theme ? null : "background: #40403E;";
 
     return (
@@ -62,11 +61,9 @@ const App = () => {
                     <Route path="/Login">
                         <LoginPage />
                     </Route>
-                    {/*<Route path="/Home" component={Home}></Route>*/}
                     <Route path="/Register">
                         <RegisterPage />
                     </Route>
-                    {/* <Route path="*" component={NotFound}></Route>*/}
                     {!Auth && <Redirect to="/Login" />}
                 </Switch>
 

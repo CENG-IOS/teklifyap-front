@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import "swiper/components/pagination/pagination.min.css";
-import sample1 from "../../images/sample1.jpg";
 
 import SwiperCore, {
     Navigation,

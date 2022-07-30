@@ -121,7 +121,7 @@ export default function Offers() {
             <Footer />
 
             <Modal show={examine} onHide={toggleExamine} centered size="lg">
-                <Modal.Header className={data && data.status ? "bg-succes" : "bg-danger" + " bg-opacity-75"} closeButton>
+                <Modal.Header className={data && data.status ? "bg-success" : "bg-danger" + " bg-opacity-75"} closeButton>
                     <Modal.Title className="user-select-none">
                         {data.title} <span className="h6">{data.date} </span>
                     </Modal.Title>
@@ -133,9 +133,7 @@ export default function Offers() {
                             <tr>
                                 <th className="text-center">#</th>
                                 <th>Malzemenin İsmi</th>
-                                {/* <th>Birim Fiyatı</th> */}
                                 <th>Ölçü Birimi</th>
-                                {/* <th>Birim Miktarı</th> */}
                                 <th>Tutar</th>
                             </tr>
                         </thead>

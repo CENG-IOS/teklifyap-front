@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import background from "../images/bg.jpg";
 import Buttons from "../components/Buttons/Buttons";
 import Input from "../components/Inputs/Input";

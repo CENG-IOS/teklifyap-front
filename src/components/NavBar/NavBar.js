@@ -54,14 +54,14 @@ const Navbar = () => {
                         </div>
                     </div>
                 </div>
-                {!Auth && (GetPath() == "/Login" || GetPath() == "/Register") ? (
+                {!Auth && (GetPath() === "/Login" || GetPath() === "/Register") ? (
                     <div style={{ zIndex: "2" }}>
                         <THEME></THEME>
                     </div>
                 ) : null}
 
                 <div className="col-12 position-absolute d-flex justify-content-end align-items-center ">
-                    {Auth || (!Auth && GetPath() == "/") ? (
+                    {Auth || (!Auth && GetPath() === "/") ? (
                         <div className="w-50 d-flex flex-column justify-content-center">
                             {/*****************************Animations*************************************/}
                             <div className="row text-center p-0 m-0">
@@ -72,7 +72,7 @@ const Navbar = () => {
                                         ></div>
                                         <div className="w-25">
                                             <div id="nav-circles">
-                                                {GetPath() != "/" ? (
+                                                {GetPath() !== "/" ? (
                                                     <div className="d-flex justify-content-center align-items-center">
                                                         <div className="leftCircle"></div>
                                                         <div className="middleCircle"></div>
@@ -80,7 +80,7 @@ const Navbar = () => {
                                                     </div>
                                                 ) : null}
                                             </div>
-                                            {GetPath() == "/" ? (
+                                            {GetPath() === "/" ? (
                                                 <div className="circles-wrapper">
                                                     <div className=" d-flex justify-content-center align-items-center ">
                                                         <div className="leftCircle-no-animation"></div>
@@ -100,7 +100,7 @@ const Navbar = () => {
                                         <div className="d-flex justify-content-center">
                                             <div className="w-25">
                                                 <div id="nav-circles2">
-                                                    {GetPath() != "/Inventory" ? (
+                                                    {GetPath() !== "/Inventory" ? (
                                                         <div className="position-absolute circles d-flex justify-content-center align-items-center">
                                                             <div className="leftCircle"></div>
                                                             <div className="middleCircle"></div>
@@ -108,7 +108,7 @@ const Navbar = () => {
                                                         </div>
                                                     ) : null}
                                                 </div>
-                                                {GetPath() == "/Inventory" ? (
+                                                {GetPath() === "/Inventory" ? (
                                                     <div className="circles-wrapper">
                                                         <div className=" d-flex justify-content-center align-items-center ">
                                                             <div className="leftCircle-no-animation"></div>
@@ -124,7 +124,7 @@ const Navbar = () => {
                                 <div className="col-3 d-flex justify-content-center">
                                     <div className="w-25">
                                         <div id="nav-circles3">
-                                            {GetPath() != "/Offers" ? (
+                                            {GetPath() !== "/Offers" ? (
                                                 <div className="circles d-flex justify-content-center align-items-center">
                                                     <div className="leftCircle"></div>
                                                     <div className="middleCircle"></div>
@@ -132,7 +132,7 @@ const Navbar = () => {
                                                 </div>
                                             ) : null}
                                         </div>
-                                        {GetPath() == "/Offers" ? (
+                                        {GetPath() === "/Offers" ? (
                                             <div className="circles-wrapper">
                                                 <div className=" d-flex justify-content-center align-items-center ">
                                                     <div className="leftCircle-no-animation"></div>
@@ -161,7 +161,7 @@ const Navbar = () => {
                                     <li className=" w-25">
                                         <NavLink
                                             activeStyle={
-                                                GetPath() == "/"
+                                                GetPath() === "/"
                                                     ? {
                                                         color: "#FFB400",
                                                     }
@@ -265,7 +265,7 @@ const Navbar = () => {
                             </div>
                         </div>
                     ) : null}
-                    {!Auth && GetPath() != "/Login" && GetPath() != "/Register" ? (
+                    {!Auth && GetPath() !== "/Login" && GetPath() !== "/Register" ? (
                         <div className="offerButton">
                             <div className="d-flex justify-content-center align-items-center pe-4 ">
                                 <LandingPLogin></LandingPLogin>
@@ -281,7 +281,7 @@ const Navbar = () => {
                         </div>
                     )}
 
-                    {!Auth && GetPath() == "/Login" ? (
+                    {!Auth && GetPath() === "/Login" ? (
                         <div className="col-5 loginregsymbol-toggle">
                             <div className="d-flex justify-content-end align-items-center">
                                 <img
@@ -307,7 +307,7 @@ const Navbar = () => {
                         </div>
                     ) : null}
 
-                    {!Auth && GetPath() == "/Register" ? (
+                    {!Auth && GetPath() === "/Register" ? (
                         <div className="col-5 loginregsymbol-toggle">
                             <div className="d-flex justify-content-end align-items-center">
                                 <img
@@ -332,7 +332,7 @@ const Navbar = () => {
                             </div>
                         </div>
                     ) : null}
-                    {Auth || (!Auth && GetPath() == "/") ? (
+                    {Auth || (!Auth && GetPath() === "/") ? (
                         <div className="d-flex justify-content-center align-items-center">
                             <div onClick={menuHandler} className="menu-sandwich">
                                 <SandMenuButton></SandMenuButton>
@@ -341,7 +341,7 @@ const Navbar = () => {
                     ) : null}
                 </div>
             </div>
-            {Auth || (!Auth && GetPath() == "/") ? (
+            {Auth || (!Auth && GetPath() === "/") ? (
                 <div
                     id="dropdown"
                     onClick={menuHandler}
@@ -370,7 +370,7 @@ const Navbar = () => {
                                 
                             </li>
                         )}
-                        {!Auth && GetPath() == "/" ? (
+                        {!Auth && GetPath() === "/" ? (
                             <li className=" d-flex justify-content-evenly">
                                 <NavLink
                                     to="/Login"
@@ -413,7 +413,7 @@ const Navbar = () => {
                             <NavLink
                                 // id="L1"
                                 activeStyle={
-                                    GetPath() == "/"
+                                    GetPath() === "/"
                                         ? {
                                             color: "#FFB400",
                                         }
@@ -489,7 +489,7 @@ const Navbar = () => {
 
                         </li>
 
-                        {!(!Auth && GetPath() == "/") ? (
+                        {!(!Auth && GetPath() === "/") ? (
                             <li className="each-link-out d-flex justify-content-center ">
                                 <NavLink
                                     onClick={logoutHandler}

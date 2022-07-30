@@ -9,17 +9,13 @@ import Avatar from '@mui/material/Avatar';
 const Profile = () => {
     const [info, setInfo] = useState({});
     const [dataSuccess, setSuccess] = useState(false);
-    const id = useSelector((state) => state.auth.userID);
+    useSelector((state) => state.auth.userID);
     const Theme = useSelector((state) => state.theme.theme);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
     const [loading, setLoading] = useState(false);
     const [firstLetters, setFirstLettters] = useState("");
     const [rndColor, setRndColor] = useState("");
-
-    let values = {
-        user_id: id,
-    };
 
     const togglePopup = () => {
         setIsOpen(!isOpen);

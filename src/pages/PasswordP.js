@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactCodeInput from "react-verification-code-input";
 import background from "../images/bg.jpg";
 import Buttons from "../components/Buttons/Buttons";

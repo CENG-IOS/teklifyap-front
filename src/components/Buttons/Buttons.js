@@ -7,7 +7,7 @@ const Buttons = (props) => {
     let className = "";
     let type = ""
     buttons.map((obj) => {
-        if (obj.placeholder == props.title) {
+        if (obj.placeholder === props.title) {
             id = obj.id;
             className = obj.className;
             type = obj.type;
@@ -16,16 +16,16 @@ const Buttons = (props) => {
     return (
 
         <button disabled={props.disabled} id={id} className={props.className ? props.className : className} /*type={type}*/ onClick={props.clicked}  >
-            {props.title == "Facebook İle Giriş Yap" ||
-                props.title == "Google İle Giriş Yap" ||
-                props.title == "Facebook İle Kayıt Ol" ||
-                props.title == "Google İle Kayıt Ol"
+            {props.title === "Facebook İle Giriş Yap" ||
+                props.title === "Google İle Giriş Yap" ||
+                props.title === "Facebook İle Kayıt Ol" ||
+                props.title === "Google İle Kayıt Ol"
 
                 ? null
                 : props.title}
 
-            {props.title == "Facebook İle Giriş Yap" ||
-                props.title == "Facebook İle Kayıt Ol" ? (
+            {props.title === "Facebook İle Giriş Yap" ||
+                props.title === "Facebook İle Kayıt Ol" ? (
                 <div className="row">
                     <div className="col-1"></div>
                     <div className="col-md-3 d-flex justify-content-center align-items-center">
@@ -41,8 +41,8 @@ const Buttons = (props) => {
                     <div className="col-1 "></div>
                 </div>
             ) : null}
-            {props.title == "Google İle Giriş Yap" ||
-                props.title == "Google İle Kayıt Ol" ? (
+            {props.title === "Google İle Giriş Yap" ||
+                props.title === "Google İle Kayıt Ol" ? (
                 <div className="row">
                     <div className="col-1"></div>
                     <div className="col-md-3 d-flex justify-content-center align-items-center">
