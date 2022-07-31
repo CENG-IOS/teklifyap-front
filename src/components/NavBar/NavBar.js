@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {NavLink, useHistory} from "react-router-dom";
 import logo from "../../images/logo.svg";
-import { LandingPLogin } from "../Buttons/LandingPLogin";
-import { LandingPOffer } from "../Buttons/LandingPOffer";
-import { useSelector, useDispatch } from "react-redux";
-import { AuthActions } from "../../store/slices/Auth";
-import { NavbarAnimation } from "../Animations/NavbarAnimation";
+import {LandingPLogin} from "../Buttons/LandingPLogin";
+import {LandingPOffer} from "../Buttons/LandingPOffer";
+import {useDispatch, useSelector} from "react-redux";
+import {AuthActions} from "../../store/slices/Auth";
+import {NavbarAnimation} from "../Animations/NavbarAnimation";
 import loginSYMBOL from "../../images/LOGsymbol.svg";
 import RegisterSYMBOL from "../../images/REGsymbol.svg";
-import { GetPath } from "../Animations/ScrollToTop";
+import {GetPath} from "../Animations/ScrollToTop";
 import Wave from "react-wavify";
-import { THEME } from "../Buttons/Theme";
+import {THEME} from "../Buttons/Theme";
 import SandMenuButton from "../Buttons/SandMenuButton";
-import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {
     const [click, setClick] = useState(true);
@@ -40,7 +39,8 @@ const Navbar = () => {
                         : "navbar-wrapper navbar-wrapper-dark-theme d-flex flex-column justify-content-center position-relative "
                 }
             >
-                <div className="position-absolute d-flex justify-content-center align-items-center" style={{ zIndex: 3 }} onClick={() => history.push("/")} >
+                <div className="position-absolute d-flex justify-content-center align-items-center" style={{zIndex: 3}}
+                     onClick={() => history.push("/")}>
                     <img className="navbar-logo " src={logo} alt="navbar-logo"></img>
                     <div className="navbar-logo-name-display">
                         <div
@@ -55,7 +55,7 @@ const Navbar = () => {
                     </div>
                 </div>
                 {!Auth && (GetPath() === "/Login" || GetPath() === "/Register") ? (
-                    <div style={{ zIndex: "2" }}>
+                    <div style={{zIndex: "2"}}>
                         <THEME></THEME>
                     </div>
                 ) : null}
@@ -68,7 +68,7 @@ const Navbar = () => {
                                 <div className="col-3">
                                     <div className="d-flex justify-content-around text-center">
                                         <div
-                                            style={{ opacity: "0", width: "15px", height: "17px" }}
+                                            style={{opacity: "0", width: "15px", height: "17px"}}
                                         ></div>
                                         <div className="w-25">
                                             <div id="nav-circles">
@@ -91,7 +91,7 @@ const Navbar = () => {
                                             ) : null}
                                         </div>
                                         <div
-                                            style={{ opacity: "0", width: "15px", height: "17px" }}
+                                            style={{opacity: "0", width: "15px", height: "17px"}}
                                         ></div>
                                     </div>
                                 </div>
@@ -101,7 +101,9 @@ const Navbar = () => {
                                             <div className="w-25">
                                                 <div id="nav-circles2">
                                                     {GetPath() !== "/Inventory" ? (
-                                                        <div className="position-absolute circles d-flex justify-content-center align-items-center">
+                                                        <div
+                                                            className="position-absolute circles d-flex justify-content-center
+                                                             align-items-center">
                                                             <div className="leftCircle"></div>
                                                             <div className="middleCircle"></div>
                                                             <div className="rightCircle"></div>
@@ -110,7 +112,8 @@ const Navbar = () => {
                                                 </div>
                                                 {GetPath() === "/Inventory" ? (
                                                     <div className="circles-wrapper">
-                                                        <div className=" d-flex justify-content-center align-items-center ">
+                                                        <div
+                                                            className="d-flex justify-content-center align-items-center ">
                                                             <div className="leftCircle-no-animation"></div>
                                                             <div className="middleCircle-no-animation"></div>
                                                             <div className="rightCircle-no-animation"></div>
@@ -125,7 +128,8 @@ const Navbar = () => {
                                     <div className="w-25">
                                         <div id="nav-circles3">
                                             {GetPath() !== "/Offers" ? (
-                                                <div className="circles d-flex justify-content-center align-items-center">
+                                                <div
+                                                    className="circles d-flex justify-content-center align-items-center">
                                                     <div className="leftCircle"></div>
                                                     <div className="middleCircle"></div>
                                                     <div className="rightCircle"></div>
@@ -361,13 +365,15 @@ const Navbar = () => {
                                     activeClassName="active"
                                     className={
                                         !Theme
-                                            ? "links p-2 each-link each-link-default-theme d-flex flex-row justify-content-evenly sandwichMenuOfferButton"
-                                            : "links p-2 each-link each-link-dark-theme d-flex flex-row justify-content-evenly sandwichMenuOfferButton"
+                                            ? "links p-2 each-link each-link-default-theme d-flex flex-row " +
+                                            "justify-content-evenly sandwichMenuOfferButton"
+                                            : "links p-2 each-link each-link-dark-theme d-flex flex-row " +
+                                            "justify-content-evenly sandwichMenuOfferButton"
                                     }
                                 >
                                     TEKLİF YAP
                                 </NavLink>
-                                
+
                             </li>
                         )}
                         {!Auth && GetPath() === "/" ? (
@@ -377,11 +383,13 @@ const Navbar = () => {
                                     activeClassName="active"
                                     className={
                                         !Theme
-                                            ? "links p-2 each-link each-link-default-theme d-flex flex-row justify-content-evenly sandwichMenuOfferButton"
-                                            : "links p-2 each-link each-link-dark-theme d-flex flex-row justify-content-evenly sandwichMenuOfferButton"
+                                            ? "links p-2 each-link each-link-default-theme d-flex flex-row " +
+                                            "justify-content-evenly sandwichMenuOfferButton"
+                                            : "links p-2 each-link each-link-dark-theme d-flex flex-row " +
+                                            "justify-content-evenly sandwichMenuOfferButton"
                                     }
                                 >
-                                    
+
                                     GİRİŞ YAP
                                 </NavLink>
 
@@ -401,8 +409,8 @@ const Navbar = () => {
                                                 id="gradient1"
                                                 gradientTransform="rotate(90)"
                                             >
-                                                <stop offset="10%" stopColor="#F3AC00" />
-                                                <stop offset="90%" stopColor="#B1A035" />
+                                                <stop offset="10%" stopColor="#F3AC00"/>
+                                                <stop offset="90%" stopColor="#B1A035"/>
                                             </linearGradient>
                                         </defs>
                                     </Wave>

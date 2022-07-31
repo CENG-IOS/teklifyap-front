@@ -48,11 +48,11 @@ const Profile = () => {
             password: document.getElementById("pass").value,            
         }
 
-        fetch(BaseURL + `api/user?user=` + localStorage.getItem("userID"), {
+        fetch(BaseURL + `api/user?user=` + JSON.parse(localStorage.getItem('user')).userID, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token
             },
             body: JSON.stringify(newUser),
         })
@@ -76,11 +76,11 @@ const Profile = () => {
     useEffect(() => {
         const colors = ["#6664A3", "#ED9CBF", "#9B7FC0", "#FFD9D6", "#F1BD80"]
         setRndColor(colors[Math.floor(Math.random() * colors.length)])
-        fetch(BaseURL + `api/user?user=` + localStorage.getItem("userID"), {
+        fetch(BaseURL + `api/user?user=` + JSON.parse(localStorage.getItem('user')).userID, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token")
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token
             },
         })
             .then((response) => response.json())

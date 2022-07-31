@@ -51,11 +51,11 @@ export default function Offers() {
 
     useEffect(() => {
         setTimeout(() => {
-            fetch(BaseURL + `api/offer/getOffers?user=` + localStorage.getItem("userID"), {
+            fetch(BaseURL + `api/offer/getOffers?user=` + JSON.parse(localStorage.getItem('user')).userID, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token")
+                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token
                 },
             })
                 .then((response) => response.json())

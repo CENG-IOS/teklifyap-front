@@ -26,11 +26,13 @@ export default function Inventory() {
 
         setTimeout(() => {
 
-            fetch(BaseURL + "api/material/getMaterialByUser" + "?user=" + localStorage.getItem("userID"), {
+
+
+            fetch(BaseURL + "api/material/getMaterialByUser" + "?user=" + JSON.parse(localStorage.getItem('user')).userID, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + localStorage.getItem("token"),
+                    "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token,
 
                 }
             })

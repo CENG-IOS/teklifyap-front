@@ -25,11 +25,11 @@ export default function ProductB(props) {
 
         setTimeout(() => setOpenRes(true), 650)
 
-        fetch(BaseURL + "api/material?material=" + mateial_id + "&user=" + localStorage.getItem("userID"), {
+        fetch(BaseURL + "api/material?material=" + mateial_id + "&user=" + JSON.parse(localStorage.getItem('user')).userID, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token"),
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token,
             }
         })
             .then((response) => response.json())
@@ -51,7 +51,7 @@ export default function ProductB(props) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + localStorage.getItem("token"),
+                "Authorization": "Bearer " + JSON.parse(localStorage.getItem('user')).token,
             },
             body: JSON.stringify({
                 pricePerUnit: ppu.current.value,

@@ -1,15 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    token: localStorage.getItem("token")
-        ? JSON.parse(localStorage.getItem("token"))
-        : undefined,
-    userID: localStorage.getItem("userID")
-        ? JSON.parse(localStorage.getItem("userID"))
-        : undefined,
+    token: localStorage.getItem("user")
+        ? JSON.parse(localStorage.getItem("user"))
+        : null,
     authentication: localStorage.getItem("authentication")
         ? JSON.parse(localStorage.getItem("authentication"))
-        : undefined,
+        : false,
 };
 
 const AuthSlice = createSlice({
@@ -17,17 +14,17 @@ const AuthSlice = createSlice({
     initialState,
     reducers: {
         login(state = initialState, action) {
-            state.authentication = true;
 
-            localStorage.setItem("token", JSON.stringify(action.payload.token));
-            localStorage.setItem("userID", JSON.stringify(action.payload.userID));
-            localStorage.setItem("authentication", true);
+            localStorage.setItem("user", JSON.stringify(action.payload));
+            localStorage.setItem("authentication", "true");
+
+            state.authentication = true;
+            state.user = JSON.stringify(action.payload);
 
         },
         logout() {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userID");
-            localStorage.removeItem("authentication");
+            localStorage.removeItem("user");
+            localStorage.setItem("authentication", "false");
         },
     },
 });

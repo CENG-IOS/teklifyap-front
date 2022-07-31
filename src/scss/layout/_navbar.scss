@@ -4,13 +4,15 @@
   box-shadow: 0 7px 6px -3px rgba(75, 73, 73, 0.747);
   z-index: 5;
 }
-.sdsd{
+
+.sdsd {
   z-index: 5;
 }
+
 .navbar-logo {
   width: 130px;
   cursor: pointer;
-  
+
 }
 
 .navbar-logo-name {
@@ -18,7 +20,7 @@
   font-family: $JosefinSans;
   font-size: 1.5rem;
   cursor: pointer;
-  
+
 }
 
 .navbar-links {
@@ -150,19 +152,23 @@
 .navbar-dd-links {
   display: none;
 }
+
 /*LOG SYMBOL*/
 .log-reg-symbol-img {
   width: 125px;
 }
+
 .log-reg-symbol-text {
   font-family: $Roboto_Sans;
   font-size: 1.2rem;
 }
-.circles-wrapper{
+
+.circles-wrapper {
   display: block;
 }
+
 @media screen and (max-width: 1000px) {
-  .circles-wrapper{
+  .circles-wrapper {
     display: none;
   }
   .sandwichMenuOfferButton {
@@ -187,8 +193,8 @@
     display: block;
     list-style: none;
     width: 100vw;
-    
-    
+
+
     box-shadow: 0 7px 6px -3px rgba(75, 73, 73, 0.747);
     margin-top: 60px;
     animation-duration: 0.5s;
@@ -265,13 +271,13 @@
   position: relative;
   display: inline-block;
   color: $black;
-  
-  
+
+
 }
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-  
+
   display: none;
   position: absolute;
   width: 100%;
@@ -280,7 +286,7 @@
   z-index: 1;
   border-radius: 12px 12px 12px 12px;
 
-  
+
 }
 
 /* Links inside the dropdown */
@@ -298,22 +304,22 @@
 
 .dropdown:hover .dropdown-content {
   display: block;
-  
+
 }
 
 .profile-dropdown {
   cursor: pointer;
   font-family: $Open_Sans;
-  
-  
+
+
 }
 
 
 .profile-dropdown:hover {
   color: $yellow;
   cursor: pointer;
-  
-  
+
+
 }
 
 .drop2:hover::before,
@@ -323,7 +329,7 @@
   height: 8px;
   background-color: $yellow;
   border-radius: 50%;
- 
+
 }
 
 .drop1:hover::before,
@@ -334,6 +340,7 @@
   background-color: $yellow;
   border-radius: 50%;
 }
+
 /*VAWE*/
 
 .wave-wrapper {
