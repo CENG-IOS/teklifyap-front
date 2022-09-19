@@ -54,6 +54,7 @@ const Login = () => {
                             };
 
                             dispatch(AuthActions.login(user));
+                            dispatch(AuthActions.login(user));
                             setTimeout(() => {
                                 history.push("/");
                             }, 1000);
