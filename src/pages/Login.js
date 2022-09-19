@@ -19,7 +19,7 @@ const Login = () => {
         const dispatch = useDispatch();
         const history = useHistory();
 
-        dispatch(AuthActions.logout());
+        // dispatch(AuthActions.logout());
 
         const emailHandler = (e) => {
             setEmail(e.target.value);
@@ -53,7 +53,7 @@ const Login = () => {
                                 userID: data.userID,
                             };
 
-                            dispatch(AuthActions.login(user));
+                            // dispatch(AuthActions.login(user));
                             dispatch(AuthActions.login(user));
                             setTimeout(() => {
                                 history.push("/");
